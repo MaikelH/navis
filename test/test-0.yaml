@@ -1,0 +1,5 @@
+deployments:
+  - environment: dev
+    compose_file: docker.compose.yml
+    targets:
+     - address: 127.0.0.1

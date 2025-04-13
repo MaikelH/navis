@@ -1,0 +1,9 @@
+deployments:
+  - environment: dev
+    compose_file: docker.compose.yml
+    auth:
+      key: test
+    targets:
+     - address: 127.0.0.1
+    env_variables:
+      TEST_VARIABLE: test
