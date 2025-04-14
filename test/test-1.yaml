@@ -3,6 +3,7 @@ deployments:
     compose_file: docker.compose.yml
     auth:
       key: test
+      source: file
     targets:
      - address: 127.0.0.1
     env_variables:

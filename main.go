@@ -1,21 +1,31 @@
 package main
 
 import (
-	"fmt"
+	"github.com/alecthomas/kong"
+	"github.com/maikelh/navis/cmd"
+	"github.com/maikelh/navis/internal"
 )
 
-//TIP <p>To run your code, right-click the code and select <b>Run</b>.</p> <p>Alternatively, click
-// the <icon src="AllIcons.Actions.Execute"/> icon in the gutter and select the <b>Run</b> menu item from here.</p>
+type CLI struct {
+	internal.Globals
+
+	Apply   cmd.ApplyCmd   `cmd:"" help:"apply settings from config file"`
+	Version cmd.VersionCmd `cmd:"" help:"Show the version information"`
+}
 
 func main() {
-	//TIP <p>Press <shortcut actionId="ShowIntentionActions"/> when your caret is at the underlined text
-	// to see how GoLand suggests fixing the warning.</p><p>Alternatively, if available, click the lightbulb to view possible fixes.</p>
-	s := "gopher"
-	fmt.Printf("Hello and welcome, %s!", s)
-
-	for i := 1; i <= 5; i++ {
-		//TIP <p>To start your debugging session, right-click your code in the editor and select the Debug option.</p> <p>We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-		// for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.</p>
-		fmt.Println("i =", 100/i)
+	cli := CLI{
+		Globals: internal.Globals{},
 	}
+
+	ctx := kong.Parse(&cli,
+		kong.Name("navis"),
+		kong.Description("Tool to remotely deploy docker compose files"),
+		kong.UsageOnError(),
+		kong.ConfigureHelp(kong.HelpOptions{
+			Compact: true,
+		}),
+	)
+	err := ctx.Run(&cli.Globals)
+	ctx.FatalIfErrorf(err)
 }
