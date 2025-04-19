@@ -6,15 +6,8 @@ import (
 	"github.com/maikelh/navis/internal"
 )
 
-type CLI struct {
-	internal.Globals
-
-	Apply   cmd.ApplyCmd   `cmd:"" help:"apply settings from config file"`
-	Version cmd.VersionCmd `cmd:"" help:"Show the version information"`
-}
-
 func main() {
-	cli := CLI{
+	cli := cmd.CLI{
 		Globals: internal.Globals{},
 	}
 

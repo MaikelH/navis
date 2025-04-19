@@ -3,10 +3,21 @@ package internal
 import (
 	"fmt"
 	"github.com/alecthomas/kong"
+	"log/slog"
 )
 
 type Globals struct {
-	Debug bool `short:"D" help:"Enable debug mode"`
+	Debug debugFlag `short:"D" help:"Enable debug mode"`
+}
+
+// A flag with a hook that, if triggered, will set the debug loggers output to stdout.
+type debugFlag bool
+
+func (d debugFlag) AfterApply() error {
+	if d {
+		SetupLogger(slog.LevelDebug)
+	}
+	return nil
 }
 
 type VersionFlag string
